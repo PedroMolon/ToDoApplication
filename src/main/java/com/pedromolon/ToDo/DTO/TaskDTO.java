@@ -1,24 +1,22 @@
 package com.pedromolon.ToDo.DTO;
 
-import com.pedromolon.ToDo.entity.User;
-
 public class TaskDTO {
 
     private Long id;
     private String title;
     private String description;
     private boolean completed;
-    private User user;
+    private Long userId;
 
     public TaskDTO() {
     }
 
-    public TaskDTO(Long id, User user, boolean completed, String title, String description) {
+    public TaskDTO(Long id, String title, String description, boolean completed, Long userId) {
         this.id = id;
-        this.user = user;
-        this.completed = completed;
         this.title = title;
         this.description = description;
+        this.completed = completed;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -53,12 +51,12 @@ public class TaskDTO {
         this.completed = completed;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
 }
