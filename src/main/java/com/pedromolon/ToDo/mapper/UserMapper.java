@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
-    public UserDTO toDTO(User user) {
+    public static UserDTO toDTO(User user) {
         if (user == null) {
             return null;
         }
@@ -26,7 +26,7 @@ public class UserMapper {
         return userDTO;
     }
 
-    public User toEntity(UserDTO userDTO) {
+    public static User toEntity(UserDTO userDTO) {
         if (userDTO == null) {
             return null;
         }
