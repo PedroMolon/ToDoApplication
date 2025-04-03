@@ -2,7 +2,9 @@ package com.pedromolon.ToDo.mapper;
 
 import com.pedromolon.ToDo.DTO.TaskDTO;
 import com.pedromolon.ToDo.entity.Task;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskMapper {
 
     public static TaskDTO toDTO(Task task) {
