@@ -2,6 +2,7 @@ package com.pedromolon.ToDo.controller;
 
 import com.pedromolon.ToDo.DTO.TaskDTO;
 import com.pedromolon.ToDo.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@PathVariable Long userId, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> createTask(@PathVariable Long userId, @Valid @RequestBody TaskDTO taskDTO) {
         Optional<TaskDTO> created = taskService.createTask(userId, taskDTO);
         return created.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long taskId, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDTO taskDTO) {
         Optional<TaskDTO> updated = taskService.updateTask(taskId, taskDTO);
         return updated.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

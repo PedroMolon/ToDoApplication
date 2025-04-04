@@ -1,9 +1,17 @@
 package com.pedromolon.ToDo.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class TaskDTO {
 
     private Long id;
+
+    @NotBlank(message = "O título é obrigatório")
+    @Size(min = 3, max = 200, message = "O título deve ter entre 3 e 200 caracteres")
     private String title;
+
+    @Size(min = 3, max = 500, message = "A descrição deve ter entre 3 e 500 caracteres")
     private String description;
     private boolean completed;
     private Long userId;

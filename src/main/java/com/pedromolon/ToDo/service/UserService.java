@@ -2,6 +2,7 @@ package com.pedromolon.ToDo.service;
 
 import com.pedromolon.ToDo.DTO.UserDTO;
 import com.pedromolon.ToDo.entity.User;
+import com.pedromolon.ToDo.exception.ResourceNotFoundException;
 import com.pedromolon.ToDo.mapper.UserMapper;
 import com.pedromolon.ToDo.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class UserService {
                 .map(user -> {
                     userRepository.delete(user);
                     return true;
-                }).orElse(false);
+                }).orElseThrow(() -> new ResourceNotFoundException("Usuário com ID: " + id + " não encontrado"));
     }
 
 }

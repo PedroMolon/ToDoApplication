@@ -1,14 +1,24 @@
 package com.pedromolon.ToDo.DTO;
 
 import com.pedromolon.ToDo.entity.Task;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
 public class UserDTO {
 
     private Long id;
+
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
     private String name;
+
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Formato de email inválido")
     private String email;
+
     private List<TaskDTO> tasks;
 
     public UserDTO() {

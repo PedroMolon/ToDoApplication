@@ -2,6 +2,7 @@ package com.pedromolon.ToDo.controller;
 
 import com.pedromolon.ToDo.DTO.UserDTO;
 import com.pedromolon.ToDo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO user = userService.createUser(userDTO);
         return ResponseEntity.ok().body(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         Optional<UserDTO> updatedUser = userService.updateUser(id, userDTO);
         return updatedUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -48,7 +49,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         boolean deleted = userService.deleteUser(id);
-        return deleted ? ResponseEntity.ok(deleted) :
+        return deleted ? ResponseEntity.ok(true) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 

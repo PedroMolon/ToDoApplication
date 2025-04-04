@@ -3,6 +3,7 @@ package com.pedromolon.ToDo.service;
 import com.pedromolon.ToDo.DTO.TaskDTO;
 import com.pedromolon.ToDo.entity.Task;
 import com.pedromolon.ToDo.entity.User;
+import com.pedromolon.ToDo.exception.ResourceNotFoundException;
 import com.pedromolon.ToDo.mapper.TaskMapper;
 import com.pedromolon.ToDo.repository.TaskRepository;
 import com.pedromolon.ToDo.repository.UserRepository;
@@ -73,7 +74,7 @@ public class TaskService {
                 .map(task -> {
                     taskRepository.delete(task);
                     return true;
-                }).orElse(false);
+                }).orElseThrow(() -> new ResourceNotFoundException("A tarefa com o ID: " + id + " não foi encontrada"));
     }
 
 }
