@@ -2,6 +2,7 @@ package com.pedromolon.ToDo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,18 +14,23 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
 
+    private String password;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     public User() {
     }
 
-    public User(Long id, String name, String email, List<Task> tasks) {
+    public User(Long id, String name, String email, String password, List<Task> tasks) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.tasks = tasks;
     }
 
@@ -50,6 +56,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Task> getTasks() {

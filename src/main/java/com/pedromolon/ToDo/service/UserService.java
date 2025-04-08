@@ -1,6 +1,7 @@
 package com.pedromolon.ToDo.service;
 
-import com.pedromolon.ToDo.DTO.UserDTO;
+import com.pedromolon.ToDo.DTO.request.UserRequest;
+import com.pedromolon.ToDo.DTO.response.UserResponse;
 import com.pedromolon.ToDo.entity.User;
 import com.pedromolon.ToDo.exception.ResourceNotFoundException;
 import com.pedromolon.ToDo.mapper.UserMapper;
@@ -22,31 +23,31 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(UserMapper::toDTO)
+                .map(UserMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public Optional<UserDTO> getUserById(Long id) {
+    public Optional<UserResponse> getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(UserMapper::toDTO);
+        return user.map(UserMapper::toResponse);
     }
 
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public UserResponse createUser(UserRequest request) {
+        User user = userMapper.toEntity(request);
         User saveUser = userRepository.save(user);
-        return userMapper.toDTO(saveUser);
+        return userMapper.toResponse(saveUser);
     }
 
-    public Optional<UserDTO> updateUser(Long id, UserDTO userDTO) {
+    public Optional<UserResponse> updateUser(Long id, UserRequest request) {
         return userRepository.findById(id).map(existingUser -> {
-            existingUser.setName(userDTO.getName());
-            existingUser.setEmail(userDTO.getEmail());
+            existingUser.setName(request.getName());
+            existingUser.setEmail(request.getEmail());
 
             User updatedUser = userRepository.save(existingUser);
-            return userMapper.toDTO(updatedUser);
+            return userMapper.toResponse(updatedUser);
         });
     }
 

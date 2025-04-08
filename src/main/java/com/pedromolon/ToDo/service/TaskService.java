@@ -1,6 +1,7 @@
 package com.pedromolon.ToDo.service;
 
-import com.pedromolon.ToDo.DTO.TaskDTO;
+import com.pedromolon.ToDo.DTO.request.TaskRequest;
+import com.pedromolon.ToDo.DTO.response.TaskResponse;
 import com.pedromolon.ToDo.entity.Task;
 import com.pedromolon.ToDo.entity.User;
 import com.pedromolon.ToDo.exception.ResourceNotFoundException;
@@ -27,45 +28,41 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public List<TaskDTO> getTasksByUser(Long userId) {
+    public List<TaskResponse> getTasksByUser(Long userId) {
         List<Task> tasks = taskRepository.findByUserId(userId);
         return tasks.stream()
-                .map(TaskMapper::toDTO)
+                .map(TaskMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskResponse> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
-                .map(TaskMapper::toDTO)
+                .map(TaskMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public Optional<TaskDTO> getTaskById(Long id) {
+    public Optional<TaskResponse> getTaskById(Long id) {
         Optional<Task> task = taskRepository.findById(id);
-        return task.map(TaskMapper::toDTO);
+        return task.map(TaskMapper::toResponse);
     }
 
-    public Optional<TaskDTO> createTask(Long userId, TaskDTO taskDTO) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            Task task = taskMapper.toEntity(taskDTO);
-            task.setUser(user.get());
-            Task savedTask = taskRepository.save(task);
-            return Optional.of(TaskMapper.toDTO(savedTask));
-        }
-
-        return Optional.empty();
+    public Optional<TaskResponse> createTask(Long userId, TaskRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        Task task = TaskMapper.toEntity(request, user);
+        Task savedTask = taskRepository.save(task);
+        return Optional.of(TaskMapper.toResponse(savedTask));
     }
 
-    public Optional<TaskDTO> updateTask(Long id, TaskDTO taskDTO) {
+    public Optional<TaskResponse> updateTask(Long id, TaskRequest request) {
         return taskRepository.findById(id).map(existingTask -> {
-            existingTask.setTitle(taskDTO.getTitle());
-            existingTask.setDescription(taskDTO.getDescription());
-            existingTask.setCompleted(taskDTO.isCompleted());
+            existingTask.setTitle(request.getTitle());
+            existingTask.setDescription(request.getDescription());
+            existingTask.setCompleted(request.isCompleted());
 
             Task updatedTask = taskRepository.save(existingTask);
-            return taskMapper.toDTO(updatedTask);
+            return taskMapper.toResponse(updatedTask);
         });
     }
 

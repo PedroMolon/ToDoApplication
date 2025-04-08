@@ -1,38 +1,20 @@
-package com.pedromolon.ToDo.DTO;
+package com.pedromolon.ToDo.DTO.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+public class TaskRequest {
 
-public class TaskDTO {
-
-    private Long id;
-
-    @NotBlank(message = "O título é obrigatório")
-    @Size(min = 3, max = 200, message = "O título deve ter entre 3 e 200 caracteres")
     private String title;
-
-    @Size(min = 3, max = 500, message = "A descrição deve ter entre 3 e 500 caracteres")
     private String description;
     private boolean completed;
     private Long userId;
 
-    public TaskDTO() {
+    public TaskRequest() {
     }
 
-    public TaskDTO(Long id, String title, String description, boolean completed, Long userId) {
-        this.id = id;
+    public TaskRequest(String title, String description, boolean completed, Long userId) {
         this.title = title;
         this.description = description;
         this.completed = completed;
         this.userId = userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -66,5 +48,4 @@ public class TaskDTO {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
 }

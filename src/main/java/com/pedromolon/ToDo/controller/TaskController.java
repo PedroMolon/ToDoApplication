@@ -1,6 +1,7 @@
 package com.pedromolon.ToDo.controller;
 
-import com.pedromolon.ToDo.DTO.TaskDTO;
+import com.pedromolon.ToDo.DTO.request.TaskRequest;
+import com.pedromolon.ToDo.DTO.response.TaskResponse;
 import com.pedromolon.ToDo.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,28 +22,28 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> getTasksByUser(@PathVariable Long userId) {
-        List<TaskDTO> tasks = taskService.getTasksByUser(userId);
+    public ResponseEntity<List<TaskResponse>> getTasksByUser(@PathVariable Long userId) {
+        List<TaskResponse> tasks = taskService.getTasksByUser(userId);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long taskId) {
-        Optional<TaskDTO> task = taskService.getTaskById(taskId);
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long taskId) {
+        Optional<TaskResponse> task = taskService.getTaskById(taskId);
         return task.map(taskDTO -> new ResponseEntity<>(taskDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@PathVariable Long userId, @Valid @RequestBody TaskDTO taskDTO) {
-        Optional<TaskDTO> created = taskService.createTask(userId, taskDTO);
+    public ResponseEntity<TaskResponse> createTask(@PathVariable Long userId, @Valid @RequestBody TaskRequest request) {
+        Optional<TaskResponse> created = taskService.createTask(userId, request);
         return created.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDTO taskDTO) {
-        Optional<TaskDTO> updated = taskService.updateTask(taskId, taskDTO);
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskRequest request) {
+        Optional<TaskResponse> updated = taskService.updateTask(taskId, request);
         return updated.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
