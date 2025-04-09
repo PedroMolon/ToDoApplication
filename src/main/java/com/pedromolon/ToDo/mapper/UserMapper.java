@@ -3,6 +3,7 @@ package com.pedromolon.ToDo.mapper;
 import com.pedromolon.ToDo.DTO.request.UserRequest;
 import com.pedromolon.ToDo.DTO.response.UserResponse;
 import com.pedromolon.ToDo.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

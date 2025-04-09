@@ -14,3 +14,7 @@ spring:
 
   flyway:
     enabled: true
+
+todoapplication:
+  security:
+    secret: "palavrasecreta"

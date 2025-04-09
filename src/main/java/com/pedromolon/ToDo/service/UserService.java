@@ -6,6 +6,7 @@ import com.pedromolon.ToDo.entity.User;
 import com.pedromolon.ToDo.exception.ResourceNotFoundException;
 import com.pedromolon.ToDo.mapper.UserMapper;
 import com.pedromolon.ToDo.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserResponse> getAllUsers() {
@@ -37,6 +40,9 @@ public class UserService {
 
     public UserResponse createUser(UserRequest request) {
         User user = userMapper.toEntity(request);
+        String password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+
         User saveUser = userRepository.save(user);
         return userMapper.toResponse(saveUser);
     }
